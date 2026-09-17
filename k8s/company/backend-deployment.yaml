@@ -19,6 +19,6 @@ spec:
     spec:
       containers:
         - name: backend
-          image: rladmswlr/ex8-company-backend:latest
+          image: rladmswlr/ex8-company-backend:f740768
           ports:
             - containerPort: 8000
