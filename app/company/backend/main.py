@@ -14,7 +14,7 @@ def root():
 @app.get("/api")
 def api():
     return {
-        "message": "EX8 Company Backend API",
+        "message": "EX8 Company Backend GitHub Actions 배포 성공",
         "status": "success"
     }
 
