@@ -1,0 +1,14 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+
+# Terraform variable secrets
+*.tfvars
+*.tfvars.json
+
+# OS / Editor
+.DS_Store
+.vscode/
