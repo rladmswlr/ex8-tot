@@ -19,6 +19,6 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: rladmswlr/ex8-company-frontend:latest
+          image: rladmswlr/ex8-company-frontend:1813a28
           ports:
             - containerPort: 80
