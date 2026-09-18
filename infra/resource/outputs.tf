@@ -1,25 +1,25 @@
 output "vpc_id" {
-  value = aws_vpc.this.id
+  value = module.network.vpc_id
 }
 
 output "public_subnet_ids" {
-  value = aws_subnet.public[*].id
+  value = module.network.public_subnet_ids
 }
 
 output "private_subnet_ids" {
-  value = aws_subnet.private[*].id
+  value = module.network.private_subnet_ids
 }
 
 output "cluster_subnet_ids" {
-  value = aws_subnet.cluster[*].id
+  value = module.network.cluster_subnet_ids
 }
 
 output "eks_cluster_name" {
-  value = aws_eks_cluster.this.name
+  value = module.eks.cluster_name
 }
 
 output "eks_cluster_endpoint" {
-  value = aws_eks_cluster.this.endpoint
+  value = module.eks.cluster_endpoint
 }
 
 output "current_aws_arn" {

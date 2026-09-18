@@ -1,13 +1,8 @@
 # =========================================================
-# 현재 AWS 사용자 정보
-# =========================================================
-data "aws_caller_identity" "current" {}
-
-# =========================================================
 # EKS Cluster IAM Role
 # =========================================================
 resource "aws_iam_role" "eks_cluster" {
-  name = "${local.project_name}-eks-cluster-role"
+  name = "${var.project_name}-eks-cluster-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -23,7 +18,7 @@ resource "aws_iam_role" "eks_cluster" {
   })
 
   tags = {
-    Name = "${local.project_name}-eks-cluster-role"
+    Name = "${var.project_name}-eks-cluster-role"
   }
 }
 
@@ -36,7 +31,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_policy" {
 # EKS Node IAM Role
 # =========================================================
 resource "aws_iam_role" "eks_node" {
-  name = "${local.project_name}-eks-node-role"
+  name = "${var.project_name}-eks-node-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -52,7 +47,7 @@ resource "aws_iam_role" "eks_node" {
   })
 
   tags = {
-    Name = "${local.project_name}-eks-node-role"
+    Name = "${var.project_name}-eks-node-role"
   }
 }
 

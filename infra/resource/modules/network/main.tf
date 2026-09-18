@@ -3,9 +3,6 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  project_name = "std16-ex8"
-  cluster_name = "${local.project_name}-eks-cluster"
-
   azs = slice(data.aws_availability_zones.available.names, 0, 3)
 
   public_subnet_cidrs = [
@@ -37,7 +34,7 @@ resource "aws_vpc" "this" {
   enable_dns_hostnames = true
 
   tags = {
-    Name = "${local.project_name}-vpc"
+    Name = "${var.project_name}-vpc"
   }
 }
 
@@ -48,7 +45,7 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${local.project_name}-igw"
+    Name = "${var.project_name}-igw"
   }
 }
 
@@ -64,10 +61,10 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "${local.project_name}-public-${count.index + 1}"
+    Name = "${var.project_name}-public-${count.index + 1}"
 
-    "kubernetes.io/role/elb"                      = "1"
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/role/elb"                    = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -82,10 +79,10 @@ resource "aws_subnet" "private" {
   availability_zone = local.azs[count.index]
 
   tags = {
-    Name = "${local.project_name}-private-${count.index + 1}"
+    Name = "${var.project_name}-private-${count.index + 1}"
 
-    "kubernetes.io/role/internal-elb"             = "1"
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/role/internal-elb"           = "1"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -100,9 +97,10 @@ resource "aws_subnet" "cluster" {
   availability_zone = local.azs[count.index]
 
   tags = {
-    Name = "${local.project_name}-cluster-${count.index + 1}"
+    Name = "${var.project_name}-cluster-${count.index + 1}"
+    Type = "cluster"
 
-    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
+    "kubernetes.io/cluster/${var.cluster_name}" = "shared"
   }
 }
 
@@ -113,7 +111,7 @@ resource "aws_eip" "nat" {
   domain = "vpc"
 
   tags = {
-    Name = "${local.project_name}-nat-eip"
+    Name = "${var.project_name}-nat-eip"
   }
 }
 
@@ -130,7 +128,7 @@ resource "aws_nat_gateway" "this" {
   ]
 
   tags = {
-    Name = "${local.project_name}-nat"
+    Name = "${var.project_name}-nat"
   }
 }
 
@@ -141,7 +139,7 @@ resource "aws_route_table" "public" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${local.project_name}-public-rt"
+    Name = "${var.project_name}-public-rt"
   }
 }
 
@@ -165,7 +163,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${local.project_name}-private-rt"
+    Name = "${var.project_name}-private-rt"
   }
 }
 
@@ -189,7 +187,7 @@ resource "aws_route_table" "cluster" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name = "${local.project_name}-cluster-rt"
+    Name = "${var.project_name}-cluster-rt"
   }
 }
 
